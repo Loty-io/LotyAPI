@@ -19,7 +19,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    const { qrCodeData, idToken } = req.body;
+    const { qrCodeData, idToken, publicAddress } = req.body;
 
     if (!qrCodeData || !idToken || typeof qrCodeData !== "string") {
       return res.status(400).json({
@@ -28,16 +28,16 @@ export default async function handler(
       });
     }
 
-    const publicAddress = lotyPartnerMagicAdmin.token.getPublicAddress(idToken);
+    const userAddress = publicAddress;
 
-    if (!publicAddress || typeof publicAddress !== "string") {
+    if (!userAddress || typeof userAddress !== "string") {
       return res.status(400).json({
         status: "failed",
         error_message: "Invalid User",
       });
     }
 
-    const partnerAddress = publicAddress.toLowerCase();
+    const partnerAddress = userAddress.toLowerCase();
     const [nfts, scannedNftCollections] = await Promise.all([
       getNftsFromCheckinCode(qrCodeData),
       getScannedCollections(partnerAddress),

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getScannedCollections } from "../../helpers/firebaseAdmin";
 import { lotyPartnerMagicAdmin } from "../../helpers/magic";
+import { typeLogin } from "../../helpers/utils";
 
 type Data = {
   status: string;
@@ -13,16 +14,19 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    const { idToken } = req.query;
+    const { idToken, publicAddress } = req.query;
+    const id_token = (await idToken) as string;
+    const address = (await publicAddress) as string;
+    const token = await typeLogin("email", id_token, address);
 
-    if (!idToken) {
+    if (!token) {
       return res.status(400).json({
         status: "failed",
         error_message: "invalid Parameters",
       });
     }
 
-    const publicAddress = lotyPartnerMagicAdmin.token.getPublicAddress(idToken);
+    const userAddress = address; //! Con magic lotyPartnerMagicAdmin.token.getPublicAddress(idToken);
 
     if (!publicAddress || typeof publicAddress !== "string") {
       return res.status(400).json({

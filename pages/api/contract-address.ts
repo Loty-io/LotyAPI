@@ -16,7 +16,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    const { contractAddress, idToken } = req.body;
+    const { contractAddress, idToken, publicAddress } = req.body;
     console.log("METHOD:", req.method);
     console.log({ idToken, contractAddress });
 
@@ -27,7 +27,7 @@ export default async function handler(
       });
     }
 
-    const publicAddress = lotyPartnerMagicAdmin.token.getPublicAddress(idToken);
+    const userAddress = publicAddress;
     console.log({ publicAddress });
 
     if (!publicAddress) {

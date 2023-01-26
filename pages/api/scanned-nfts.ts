@@ -14,7 +14,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   try {
-    const { idToken, contractAddress } = req.query;
+    const { idToken, contractAddress, publicAddress } = req.query;
 
     if (!idToken || !contractAddress || typeof contractAddress !== "string") {
       return res.status(400).json({
@@ -23,16 +23,16 @@ export default async function handler(
       });
     }
 
-    const publicAddress = lotyPartnerMagicAdmin.token.getPublicAddress(idToken);
+    const userAddress = publicAddress;
 
-    if (!publicAddress || typeof publicAddress !== "string") {
+    if (!userAddress || typeof userAddress !== "string") {
       return res.status(400).json({
         status: "failed",
         error_message: "Invalid User",
       });
     }
 
-    const partnerAddress = publicAddress.toLowerCase();
+    const partnerAddress = userAddress.toLowerCase();
     const contractAddressLowerCase = contractAddress.toLowerCase();
 
     const nfts = await getScannedNfts(partnerAddress, contractAddressLowerCase);

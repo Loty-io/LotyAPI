@@ -1,3 +1,5 @@
+import { abiStaging, abiProduction } from "./abi";
+
 export const IS_TESTING = process.env.NODE_ENV === "development";
 
 export const DEV_MODE_PARAMS = {
@@ -14,3 +16,11 @@ export const DB_COLLECTION = {
   scannedCollections: "scannedCollections",
   scannedNfts: "scannedNfts",
 };
+
+export const PROVIDER_URL = process.env.NEXT_PUBLIC_PROVIDER_URL || "";
+export const CALLER = process.env.NEXT_PUBLIC_CALLER || "";
+export const PRIVATE_KEY = process.env.NEXT_PUBLIC_PRIVATE_KEY || "";
+export const abi =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
+    ? abiStaging
+    : abiProduction;

@@ -13,24 +13,27 @@ export const truncateStringIfNeeded = (text: string, limit: number) => {
 };
 
 export const typeLogin = (type: string, token: string, pa: string) => {
-  console.log("--------------------ENTRA EN LA FUNCIÓN typeLogin-----------");
-  console.log(type);
-  console.log(token);
-  console.log(pa);
+  // console.log("--------------------ENTRA EN LA FUNCIÓN typeLogin-----------");
+  // console.log(type);
+  // console.log(token);
+  // console.log(pa);
   const decoded_token = jwt_decode(token) as JSON;
-  console.log(decoded_token);
+  console.log(token);
 
   if (type === "walletconnect") {
     //*aqui adentro va todas las evaluciones del token
     console.log("-----------ENTRA A WALLETCONNECT---------------");
-    console.log(decoded_token.address);
+    // console.log(decoded_token.address);
+    // console.log(pa);
     const jwt = JWT(decoded_token, "ip_sjdkla16u380fog");
     console.log(jwt);
+    console.log(token);
     //WALLETCONNECT
     if (token !== jwt || pa !== decoded_token.address) {
       return false;
     }
     const timestamp = Math.floor(new Date().getTime() / 1000);
+    // console.log("aqui llega");
     if (timestamp > decoded_token.exp) {
       return false;
     }
@@ -83,7 +86,7 @@ const getIdtoken = (address: string) => {
 
   //time
   let now = new Date().getTime();
-  // console.log(now);
+  console.log(now);
   const timestamp = Math.floor(now / 1);
   // console.log(timestamp);
   // console.log('Hola mundo');

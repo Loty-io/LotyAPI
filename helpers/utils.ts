@@ -67,12 +67,12 @@ export const validateToken = async (publicAddress: string, token: string) => {
 
   const timestamp = Math.floor(new Date().getTime() / 1);
 
-  if (timestamp <= decodeTok.exp) {
+  if (decodeTok.exp <= timestamp) {
     return "withtime";
   }
 
   const newtoken = getIdtoken(decodeTok.address);
-  // console.log(newtoken);
+  console.log(newtoken);
   if (!newtoken) {
     return "error";
   }

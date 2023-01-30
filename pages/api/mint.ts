@@ -65,7 +65,7 @@ export default async function handler(
   } catch (error: any) {
     console.log("Error:", error.message);
     return res.status(500).json({
-      status: "failed",
+      status: "failed bro",
       error_message: error.message,
     });
   }

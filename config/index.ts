@@ -17,10 +17,15 @@ export const DB_COLLECTION = {
   scannedNfts: "scannedNfts",
 };
 
-export const PROVIDER_URL = process.env.NEXT_PUBLIC_PROVIDER_URL || "";
-export const CALLER = process.env.NEXT_PUBLIC_CALLER || "";
 export const PRIVATE_KEY = process.env.NEXT_PUBLIC_PRIVATE_KEY || "";
+export const ALCHEMY_API_KEY = process.env.NEXT_ALCHEMY_API_KEY || "";
+export const PROVIDER_NETWORK = process.env.NEXT_PROVIDER_NETWORK || "maticmum";
+export const CHAIN_NAME = process.env.NEXT_CHAIN_NAME || "matic";
+
+//deprecated
 export const abi =
   process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
     ? abiStaging
     : abiProduction;
+export const PROVIDER_URL = process.env.NEXT_PUBLIC_PROVIDER_URL || "";
+export const CALLER = process.env.NEXT_PUBLIC_CALLER || "";

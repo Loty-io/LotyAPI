@@ -1,15 +1,68 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import Web3 from "web3";
-import { CALLER, PRIVATE_KEY, PROVIDER_URL } from "../../config";
+import {
+  PROVIDER_NETWORK,
+  PRIVATE_KEY,
+  ALCHEMY_API_KEY,
+  CHAIN_NAME,
+} from "../../config";
 import { parseCreateMintDto } from "../../types/mint/mintDto";
+
+import { NFT, ThirdwebSDK } from "@thirdweb-dev/sdk";
+import { ethers } from "ethers";
 
 type Data = {
   status: string;
   error_message?: string;
-  hash?: any;
+  tx_hash?: string;
+  nft_details?: NFT;
 };
 
 export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
+  const body = req.body;
+
+  const provider = new ethers.providers.AlchemyProvider(
+    PROVIDER_NETWORK,
+    ALCHEMY_API_KEY
+  );
+
+  const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+  const sdk = ThirdwebSDK.fromSigner(signer, CHAIN_NAME);
+
+  const { wallet, contractAddress } = parseCreateMintDto(body);
+  const contract = await sdk.getContract(contractAddress, "nft-collection");
+
+  // Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
+  const metadata = {
+    name: "Loty NFT Test",
+    description: "Loty NFT",
+  };
+
+  const tx = await contract.mintTo(wallet, metadata);
+  await tx
+    .data()
+    .then((nftDetails: NFT) => {
+      const txHash = tx.receipt.transactionHash;
+
+      console.log(`Successfully minted <${nftDetails}>`);
+
+      return res.status(200).json({
+        status: "success",
+        nft_details: nftDetails,
+        tx_hash: txHash,
+      });
+    })
+    .catch((err) => {
+      return res.status(500).json({
+        status: "failed",
+        error_message: err.message,
+      });
+    });
+}
+/*
+export default async function handlerB(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
@@ -70,3 +123,4 @@ export default async function handler(
     });
   }
 }
+*/

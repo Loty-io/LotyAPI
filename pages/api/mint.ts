@@ -7,13 +7,14 @@ import {
 } from "../../config";
 import { parseCreateMintDto } from "../../types/mint/mintDto";
 
-import { ThirdwebSDK } from "@thirdweb-dev/sdk";
+import { NFT, ThirdwebSDK } from "@thirdweb-dev/sdk";
 import { ethers } from "ethers";
 
 type Data = {
   status: string;
   error_message?: string;
-  hash?: any;
+  tx_hash?: string;
+  nft_details?: NFT;
 };
 
 export default async function handler(
@@ -42,12 +43,15 @@ export default async function handler(
   const tx = await contract.mintTo(wallet, metadata);
   await tx
     .data()
-    .then((success) => {
-      console.log("Successfully minted" + JSON.stringify(success));
-      console.log(success);
+    .then((nftDetails: NFT) => {
+      const txHash = tx.receipt.transactionHash;
+
+      console.log(`Successfully minted <${nftDetails}>`);
+
       return res.status(200).json({
         status: "success",
-        success,
+        nft_details: nftDetails,
+        tx_hash: txHash,
       });
     })
     .catch((err) => {

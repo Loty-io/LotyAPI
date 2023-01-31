@@ -7,7 +7,8 @@ export const ALCHEMY_KEY = USE_TESTNET
 
 const settings = {
   apiKey: ALCHEMY_KEY,
-  network: USE_TESTNET ? Network.ETH_GOERLI : Network.ETH_MAINNET,
+  network: USE_TESTNET ? Network.MATIC_MUMBAI : Network.MATIC_MAINNET,
+  //network: USE_TESTNET ? Network.ETH_GOERLI : Network.ETH_MAINNET,
 };
 
 const alchemy = new Alchemy(settings);

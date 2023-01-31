@@ -21,45 +21,53 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const body = req.body;
+  try {
+    const body = req.body;
 
-  const provider = new ethers.providers.AlchemyProvider(
-    PROVIDER_NETWORK,
-    ALCHEMY_API_KEY
-  );
+    const provider = new ethers.providers.AlchemyProvider(
+      PROVIDER_NETWORK,
+      ALCHEMY_API_KEY
+    );
 
-  const signer = new ethers.Wallet(PRIVATE_KEY, provider);
-  const sdk = ThirdwebSDK.fromSigner(signer, CHAIN_NAME);
+    const signer = new ethers.Wallet(PRIVATE_KEY, provider);
+    const sdk = ThirdwebSDK.fromSigner(signer, CHAIN_NAME);
 
-  const { wallet, contractAddress } = parseCreateMintDto(body);
-  const contract = await sdk.getContract(contractAddress, "nft-collection");
+    const { wallet, contractAddress } = parseCreateMintDto(body);
+    const contract = await sdk.getContract(contractAddress, "nft-collection");
 
-  // Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
-  const metadata = {
-    name: "Loty NFT Test",
-    description: "Loty NFT",
-  };
+    // Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
+    const metadata = {
+      name: "Loty NFT Test",
+      description: "Loty NFT",
+    };
 
-  const tx = await contract.mintTo(wallet, metadata);
-  await tx
-    .data()
-    .then((nftDetails: NFT) => {
-      const txHash = tx.receipt.transactionHash;
+    const tx = await contract.mintTo(wallet, metadata);
+    await tx
+      .data()
+      .then((nftDetails: NFT) => {
+        const txHash = tx.receipt.transactionHash;
 
-      console.log(`Successfully minted <${nftDetails}>`);
+        console.log(`Successfully minted <${nftDetails}>`);
 
-      return res.status(200).json({
-        status: "success",
-        nft_details: nftDetails,
-        tx_hash: txHash,
+        return res.status(200).json({
+          status: "success",
+          nft_details: nftDetails,
+          tx_hash: txHash,
+        });
+      })
+      .catch((err) => {
+        return res.status(500).json({
+          status: "failed",
+          error_message: err.message,
+        });
       });
-    })
-    .catch((err) => {
-      return res.status(500).json({
-        status: "failed",
-        error_message: err.message,
-      });
+  } catch (error: any) {
+    console.log("Error:", error.message);
+    return res.status(500).json({
+      status: "failed",
+      error_message: error.message,
     });
+  }
 }
 /*
 export default async function handlerB(

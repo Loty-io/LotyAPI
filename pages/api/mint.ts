@@ -28,7 +28,7 @@ export default async function handler(
       PROVIDER_NETWORK,
       ALCHEMY_API_KEY
     );
-
+    //only comment to refresh lotyApi on versel
     const signer = new ethers.Wallet(PRIVATE_KEY, provider);
     const sdk = ThirdwebSDK.fromSigner(signer, CHAIN_NAME);
 

@@ -32,6 +32,14 @@ export default async function handler(
       req.query;
     let token = "";
     let publicAddress = "";
+
+    console.log("-------------------INICIA API-------------------------------");
+    console.log(contractAddress);
+    console.log(tokenId);
+    console.log(public_address);
+    console.log(typeOflogin);
+    console.log(id_token);
+
     if (
       !contractAddress ||
       !tokenId ||
@@ -43,11 +51,19 @@ export default async function handler(
         error_message: "invalid Parameters",
       });
     }
+
     const add = (await public_address) as string;
     const tpel = await `${typeOflogin}`;
     const itok = (await id_token) as string;
+    console.log(
+      "-------------------------NUEVOS VARIABLES------------------------"
+    );
+    console.log(add);
+    console.log(tpel);
+    console.log(itok);
 
     const idToken = await typeLogin(tpel, itok, add);
+
     if (!idToken) {
       return res.status(400).json({
         status: "failed",

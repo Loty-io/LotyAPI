@@ -13,12 +13,12 @@ export const truncateStringIfNeeded = (text: string, limit: number) => {
 };
 
 export const typeLogin = (type: string, token: string, pa: string) => {
-  // console.log("--------------------ENTRA EN LA FUNCIÓN typeLogin-----------");
-  // console.log(type);
-  // console.log(token);
-  // console.log(pa);
-  const decoded_token = jwt_decode(token) as JSON;
+  console.log("--------------------ENTRA EN LA FUNCIÓN typeLogin-----------");
+  console.log(type);
   console.log(token);
+  console.log(pa);
+  const decoded_token = jwt_decode(token) as JSON;
+  console.log(decoded_token);
 
   if (type === "walletconnect") {
     //*aqui adentro va todas las evaluciones del token
@@ -27,9 +27,9 @@ export const typeLogin = (type: string, token: string, pa: string) => {
     // console.log(pa);
     const jwt = JWT(decoded_token, "ip_sjdkla16u380fog");
     console.log(jwt);
-    console.log(token);
+    console.log(decoded_token.address);
     //WALLETCONNECT
-    if (token !== jwt || pa !== decoded_token.address) {
+    if (pa !== decoded_token.address) {
       return false;
     }
     const timestamp = Math.floor(new Date().getTime() / 1000);

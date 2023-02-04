@@ -1,4 +1,5 @@
 import { abiStaging, abiProduction } from "./abi";
+import { collectionsStaging, collectionProd } from "./collections";
 
 export const IS_TESTING = process.env.NODE_ENV === "development";
 
@@ -19,8 +20,15 @@ export const DB_COLLECTION = {
 
 export const PRIVATE_KEY = process.env.NEXT_PUBLIC_PRIVATE_KEY || "";
 export const ALCHEMY_API_KEY = process.env.NEXT_ALCHEMY_API_KEY || "";
-export const PROVIDER_NETWORK = process.env.NEXT_PROVIDER_NETWORK || "maticmum";
+export const PROVIDER_NETWORK =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
+    ? process.env.NEXT_PROVIDER_NETWORK || "maticmum"
+    : process.env.NEXT_PROVIDER_NETWORK || "matic";
 export const CHAIN_NAME = process.env.NEXT_CHAIN_NAME || "matic";
+export const collections =
+  process.env.NEXT_PUBLIC_ENVIRONMENT === "development"
+    ? collectionsStaging
+    : collectionProd;
 
 //deprecated
 export const abi =

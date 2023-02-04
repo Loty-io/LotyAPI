@@ -8,7 +8,7 @@ export const ALCHEMY_KEY = USE_TESTNET
 const settings = {
   apiKey: ALCHEMY_KEY,
   //This is only de network, version beta to loty, before change the network
-  network: USE_TESTNET ? Network.MATIC_MAINNET : Network.MATIC_MUMBAI,
+  network: USE_TESTNET ? Network.MATIC_MUMBAI : Network.MATIC_MAINNET,
 
   // network: USE_TESTNET ? Network.MATIC_MUMBAI : Network.MATIC_MAINNET,
   //network: USE_TESTNET ? Network.ETH_GOERLI : Network.ETH_MAINNET,
